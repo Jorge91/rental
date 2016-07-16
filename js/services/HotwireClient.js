@@ -8,7 +8,8 @@
                 var defer = $q.defer();
                 var url = API_URL
                     + '?apikey=' + API_KEY
-                    + '&format=json'
+                    + '&format=jsonp'
+                    + '&callback=JSON_CALLBACK'
                     + '&startdate=' + $filter('date')(dateFrom, 'MM/dd/yyyy')
                     + '&enddate=' + $filter('date')(dateTo, 'MM/dd/yyyy')
                     + '&pickuptime=' + $filter('date')(dateFrom, 'HH:mm')
@@ -18,13 +19,13 @@
                     url += '&dest=' + location;
                 }
 
-
-                $http.get(url).success(function (cars) {
+                $http.jsonp(url).success(function (cars) {
                     defer.resolve(cars['Result']);
                 })
                     .error(function (error) {
                         defer.reject(error);
                     });
+
                 return defer.promise;
             }
 
