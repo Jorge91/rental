@@ -1,0 +1,106 @@
+<div ng-controller="SearchCtrl">
+
+    <div layout="row" layout-sm="column" layout-align="space-around center" ng-show="uiState == 'loading'">
+        <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+    </div>
+
+
+    <md-card md-theme="default" md-theme-watch ng-show="uiState == 'search'">
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title">Search a car:</span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <div layout="row" layout-sm="column" layout-xs="column" layout-align="start center">
+                <div flex>
+                    <div class="md-toolbar-tools">
+                        <mdp-date-picker mdp-placeholder="Start date"
+                                         ng-model="searchParams.startDate"></mdp-date-picker>
+                        <mdp-time-picker ng-model="searchParams.startDate"></mdp-time-picker>
+                    </div>
+                </div>
+                <div flex>
+                    <div class="md-toolbar-tools">
+                        <mdp-date-picker mdp-placeholder="End date" ng-model="searchParams.endDate"></mdp-date-picker>
+                        <mdp-time-picker ng-model="searchParams.endDate"></mdp-time-picker>
+                    </div>
+                </div>
+            </div>
+
+            <div layout="row" layout-sm="column" layout-align="start center">
+                <md-input-container class="md-block" flex="grow">
+                    <label>Destination</label>
+                    <input ng-model="searchParams.location">
+                </md-input-container>
+            </div>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                <md-button class="md-raised md-primary"
+                           ng-disabled="searchParams.startDate == null || searchParams.endDate == null || searchParams.location == ''"
+                           ng-click="search()">
+                    Search
+                </md-button>
+            </section>
+        </md-card-content>
+    </md-card>
+
+
+    <md-card md-theme="default" md-theme-watch ng-show="uiState == 'results'">
+        <div class="floatingBtn">
+            <md-button class="md-fab floatingBtn" style="position:fixed; top:15px; right:35px;"
+                       aria-label="Results"
+                       ng-show="uiState == 'results'"
+                       ng-click="searchView()">
+                <i class="large material-icons">search</i>
+            </md-button>
+        </div>
+        <md-content flex>
+            <md-list>
+                <md-list-item class="md-3-line" ng-repeat="car in cars">
+                    <div class="md-list-item-text">
+                        <md-list flex layout="row" layout-align="start center">
+                            <md-list-item>
+                                <i class="material-icons">local_airport</i>Airport: {{ car.PickupAirport }}
+                            </md-list-item>
+                            <md-list-item>
+                                <span>Subtotal: {{ car.SubTotal }}</span>
+                            </md-list-item>
+                            <md-list-item>
+                                <span class=md-title">Total: {{ car.TotalPrice }} {{ car.CurrencyCode }}</span>
+                            </md-list-item>
+                        </md-list>
+                        <md-list flex layout="row" layout-align="start center">
+                            <md-list-item>
+                                <i class="material-icons">info</i>{{ car.LocationDescription }}
+                            </md-list-item>
+                            <md-list-item>
+                                <i class="material-icons">add</i>Mileage: {{ car.MileageDescription }}
+                            </md-list-item>
+                            <md-list-item>
+                                See in web: <a href="{{ car.DeepLink }}"><i class="material-icons">link</i></a>
+                            </md-list-item>
+
+                        </md-list>
+
+
+                    </div>
+                    <md-divider inset></md-divider>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </md-card>
+
+
+    <md-card md-theme="default" md-theme-watch ng-show="uiState == 'error'">
+        <md-content flex>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                No data could be found
+            </section>
+            <section layout="row" layout-sm="column" layout-align="center center" layout-wrap>
+                <md-button class="md-raised md-primary" ng-click="searchView()">Search again
+                </md-button>
+            </section>
+        </md-content>
+    </md-card>
+
+</div>
