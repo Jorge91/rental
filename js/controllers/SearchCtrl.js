@@ -13,9 +13,7 @@
                 HotwireClient.getCarsWithFilters(
                     $scope.searchParams.startDate, $scope.searchParams.endDate, $scope.searchParams.location)
                     .then(function (cars) {
-                        console.log(cars);
                         if (cars !== undefined && cars.length > 0) {
-                            console.log(cars);
                             $scope.cars = cars;
                             $scope.uiState = 'results';
                         }
